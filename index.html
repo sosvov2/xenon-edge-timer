@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<!-- saved from url=(0094)file:///C:/Users/User/Documents/Codex/2026-09-10/new-chat/outputs/silver-xl-timer-concept.html -->
+<html lang="ko"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Silver XL Timer Frame</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700&display=swap');
+    * { box-sizing: border-box; }
+    body { margin: 0; min-height: 100vh; display: grid; place-items: center; background: #000; font-family: Orbitron, Arial, sans-serif; }
+    .frame { width: min(96vw, 1500px); aspect-ratio: 2.35 / 1; position: relative; padding: clamp(18px, 3vw, 54px); color: #e7f5ff; background: linear-gradient(135deg,#f3f7fa 0,#62717c 3%,#1c272e 6%,#020507 13%,#000 87%,#26343d 94%,#e8f0f3 100%); clip-path: polygon(2.2% 0,97.8% 0,100% 8%,100% 92%,97.8% 100%,2.2% 100%,0 92%,0 8%); box-shadow: 0 0 0 1px #c8d6de, 0 0 30px #98bed42b; }
+    .frame::before { content:""; position:absolute; inset:10px; border:1px solid #8aa5b4; clip-path: polygon(2% 0,98% 0,100% 8%,100% 92%,98% 100%,2% 100%,0 92%,0 8%); box-shadow: inset 0 0 22px #79bbe21c; }
+    .topline, .bottomline { position:absolute; left:6%; right:6%; height:2px; background:linear-gradient(90deg,transparent,#e9f5ff 9%,#88aabf 48%,#e9f5ff 91%,transparent); box-shadow:0 0 9px #c7e9ff; } .topline{top:8%}.bottomline{bottom:8%}
+    .timers { height:100%; display:grid; grid-template-columns: 1.8fr 1fr; gap:7%; align-items:center; padding:8% 4% 0; }
+    .timer { text-align:center; position:relative; background:transparent; }
+    .timer::before,.timer::after { content:none; }
+    .large { padding:5% 4%; } .medium { padding:5% 4%; }
+    .size { color:#d8ca8f; letter-spacing:.3em; font-size:clamp(8px,1vw,13px); margin-bottom:5%; } .large .size{color:#fff0af}
+    .digits { color:#fff8d5; font-weight:600; line-height:1; letter-spacing:.06em; text-shadow:0 0 4px #fffdf0,0 0 15px #ffe58b,0 0 30px #f1c85a78; white-space:nowrap; }
+    .large .digits{font-size:clamp(34px,6vw,92px)} .medium .digits{font-size:clamp(20px,3vw,46px)}
+    .meta { margin-top:7%; color:#d9cd9b; font-size:clamp(7px,.85vw,12px); letter-spacing:.23em; }
+    .actions { position:relative; z-index:1; display:flex; justify-content:center; gap:10px; margin-top:5%; }
+    .action { border:1px solid #dacb83; padding:.6em 1em; color:#fff3ba; background:#171305; box-shadow:inset 0 0 9px #ffe58b25,0 0 9px #ffe58b25; font:500 clamp(7px,.8vw,11px) Orbitron, sans-serif; letter-spacing:.15em; cursor:pointer; } .action:hover{background:#3a2f0b}.action:focus-visible{outline:2px solid white;outline-offset:3px}
+    .calendar { position:relative; z-index:1; display:grid; grid-template-columns:repeat(7,1fr); gap:clamp(1px,.22vw,4px); margin-top:5%; color:#d7c987; font-size:clamp(6px,.65vw,10px); } .calendar span{display:grid;place-items:center;height:clamp(9px,1.18vw,17px);border:1px solid #4b4425}.calendar .weekday{color:#fff0ae;border:0}.calendar .today{color:#1e1700;background:#ffe99a;border-color:#fff7ce;box-shadow:0 0 9px #ffe58b}
+    @media(max-width:650px){.timers{gap:4%;padding-left:1%;padding-right:1%}.frame{width:100vw}.timer{border-width:1px}.calendar{gap:1px}.calendar span{height:8px}.action{padding:.45em .55em}}
+  </style>
+</head>
+<body>
+  <main class="frame" aria-label="실버 XL 타이머 프레임 시안">
+    <div class="topline"></div><div class="bottomline"></div>
+    <section class="timers">
+      <article class="timer large"><div class="size">LARGE TIMER · L</div><div class="digits" id="timer">01:30:00</div><div class="meta">HOUR &nbsp; MIN &nbsp; SEC</div><div class="actions"><button class="action" id="start">▶ START</button><button class="action" id="pause">Ⅱ PAUSE</button></div></article>
+      <article class="timer medium"><div class="size" id="month">2026.09 · CALENDAR M</div><div class="digits" id="date">10</div><div class="meta" id="day">THURSDAY</div><div class="calendar" id="calendar" aria-label="월간 달력"><span class="weekday">S</span><span class="weekday">M</span><span class="weekday">T</span><span class="weekday">W</span><span class="weekday">T</span><span class="weekday">F</span><span class="weekday">S</span><span></span><span></span><span class="">1</span><span class="">2</span><span class="">3</span><span class="">4</span><span class="">5</span><span class="">6</span><span class="">7</span><span class="">8</span><span class="">9</span><span class="today">10</span><span class="">11</span><span class="">12</span><span class="">13</span><span class="">14</span><span class="">15</span><span class="">16</span><span class="">17</span><span class="">18</span><span class="">19</span><span class="">20</span><span class="">21</span><span class="">22</span><span class="">23</span><span class="">24</span><span class="">25</span><span class="">26</span><span class="">27</span><span class="">28</span><span class="">29</span><span class="">30</span></div></article>
+    </section>
+  </main>
+  <script>
+    let remaining = 90 * 60, interval;
+    const timer = document.querySelector('#timer');
+    const drawTime = () => { const h=Math.floor(remaining/3600), m=Math.floor(remaining%3600/60), s=remaining%60; timer.textContent=[h,m,s].map(v=>String(v).padStart(2,'0')).join(':'); };
+    document.querySelector('#start').onclick=()=>{ if(interval||!remaining)return; interval=setInterval(()=>{remaining--;drawTime();if(!remaining)clearInterval(interval)},1000); };
+    document.querySelector('#pause').onclick=()=>{ clearInterval(interval); interval=null; };
+    const now=new Date(), year=now.getFullYear(), month=now.getMonth(), today=now.getDate();
+    document.querySelector('#month').textContent=`${year}.${String(month+1).padStart(2,'0')} · CALENDAR M`;
+    document.querySelector('#date').textContent=String(today).padStart(2,'0');
+    document.querySelector('#day').textContent=now.toLocaleDateString('en-US',{weekday:'long'}).toUpperCase();
+    const cal=document.querySelector('#calendar'); ['S','M','T','W','T','F','S'].forEach(x=>cal.insertAdjacentHTML('beforeend',`<span class="weekday">${x}</span>`));
+    const first=new Date(year,month,1).getDay(), days=new Date(year,month+1,0).getDate(); for(let i=0;i<first;i++)cal.insertAdjacentHTML('beforeend','<span></span>'); for(let d=1;d<=days;d++)cal.insertAdjacentHTML('beforeend',`<span class="${d===today?'today':''}">${d}</span>`);
+  </script>
+
+
+</body></html>
